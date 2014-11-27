@@ -40,7 +40,7 @@ class puppet::storeconfigs(
   ##If we point at a puppetdb on this machine
   if ($dbserver  == 'localhost') or ($dbserver  == '127.0.0.1') or ($dbserver  == $::fqdn)
   {
-    $require  =  Class[puppetdb]
+    $require  =  Class['puppetdb::server']
   }
   else
   {
