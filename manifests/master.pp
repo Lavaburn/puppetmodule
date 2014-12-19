@@ -32,6 +32,7 @@
 #  ['puppetdb_startup_timeout'] - The timeout for puppetdb
 #  ['dns_alt_names']            - Comma separated list of alternative DNS names
 #  ['digest_algorithm']         - The algorithm to use for file digests.
+#  ['generate_ssl_certs']       - Generate ssl certs (false to disable)
 #
 # Requires:
 #
@@ -73,6 +74,7 @@ class puppet::master (
   $puppet_docroot             = $::puppet::params::puppet_docroot,
   $puppet_vardir              = $::puppet::params::puppet_vardir,
   $puppet_passenger_port      = $::puppet::params::puppet_passenger_port,
+  $puppet_passenger_tempdir   = false,
   $puppet_master_package      = $::puppet::params::puppet_master_package,
   $puppet_master_service      = $::puppet::params::puppet_master_service,
   $version                    = 'present',
@@ -83,6 +85,7 @@ class puppet::master (
   $puppetdb_strict_validation = $::puppet::params::puppetdb_strict_validation,
   $dns_alt_names              = ['puppet'],
   $digest_algorithm           = $::puppet::params::digest_algorithm,
+  $generate_ssl_certs         = true,
 ) inherits puppet::params {
 
   anchor { 'puppet::master::begin': }
@@ -121,14 +124,16 @@ class puppet::master (
 
   Anchor['puppet::master::begin'] ->
   class {'puppet::passenger':
-    puppet_passenger_port  => $puppet_passenger_port,
-    puppet_docroot         => $puppet_docroot,
-    apache_serveradmin     => $apache_serveradmin,
-    puppet_conf            => $::puppet::params::puppet_conf,
-    puppet_ssldir          => $puppet_ssldir,
-    certname               => $certname,
-    conf_dir               => $::puppet::params::confdir,
-    dns_alt_names          => join($dns_alt_names,','),
+    puppet_passenger_port => $puppet_passenger_port,
+    puppet_docroot        => $puppet_docroot,
+    apache_serveradmin    => $apache_serveradmin,
+    puppet_conf           => $::puppet::params::puppet_conf,
+    puppet_ssldir         => $puppet_ssldir,
+    certname              => $certname,
+    conf_dir              => $::puppet::params::confdir,
+    dns_alt_names         => join($dns_alt_names,','),
+    generate_ssl_certs    => $generate_ssl_certs,
+    puppet_passenger_tempdir => $puppet_passenger_tempdir,
   } ->
   Anchor['puppet::master::end']
 
