@@ -51,7 +51,7 @@ class puppet::passenger(
   #class { 'apache::mod::passenger': passenger_max_pool_size => 12, }
 
   # TODO create flag,
-  include apache::mod::ssl
+  #include apache::mod::ssl
 
   if $::osfamily == 'redhat' {
     file { '/var/lib/puppet/reports':
@@ -109,7 +109,7 @@ class puppet::passenger(
     priority             => '40',
     docroot              => $puppet_docroot,
     serveradmin          => $apache_serveradmin,
-    servername           => $certname,
+    servername           => $certname,#TODO UNDEF !!!
     ssl                  => true,
     ssl_cert             => "${puppet_ssldir}/certs/${certname}.pem",
     ssl_key              => "${puppet_ssldir}/private_keys/${certname}.pem",
