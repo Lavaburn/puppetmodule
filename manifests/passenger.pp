@@ -43,9 +43,14 @@ class puppet::passenger(
   $conf_dir,
   $dns_alt_names
 ){
-  include apache
+  # TODO create flag, I want to include it myself !
+  #include apache
   include puppet::params
-  class { 'apache::mod::passenger': passenger_max_pool_size => 12, }
+
+  # TODO create flag, I want to include it myself !
+  #class { 'apache::mod::passenger': passenger_max_pool_size => 12, }
+
+  # TODO create flag,
   include apache::mod::ssl
 
   if $::osfamily == 'redhat' {
@@ -131,12 +136,13 @@ class puppet::passenger(
   }
 
   #Hack to add extra passenger configurations for puppetmaster
-  file { 'puppet_passenger.conf':
-    ensure  => file,
-    path    => "${apache::mod_dir}/puppet_passenger.conf",
-    content => template('puppet/puppet_passenger.conf.erb'),
-    notify  => Service['httpd'],
-  }
+  # TODO create flag, I want to include it myself !
+#  file { 'puppet_passenger.conf':
+#    ensure  => file,
+#    path    => "${apache::mod_dir}/puppet_passenger.conf",
+#    content => template('puppet/puppet_passenger.conf.erb'),
+#    notify  => Service['httpd'],
+#  }
 
   file { '/etc/puppet/rack':
     ensure => directory,
